@@ -16,6 +16,7 @@ public class MortgageModel {
         mp.setPrinciple(this.p);
         mp.setAmortization(this.a);
         mp.setInterest(this.i);
+        mp.outstandingAfter(Integer.valueOf(this.a),"%,16.0f");
     }
 
     public String computePayment(){
@@ -24,6 +25,6 @@ public class MortgageModel {
 
     public String outstandingAfter(){
         mp.setAmortization(this.a);
-        return mp.outstandingAfter(Integer.valueOf(this.a),"%,16.0f");
+        return mp.outstandingAfter(3,"%,16.0f");
     }
 }

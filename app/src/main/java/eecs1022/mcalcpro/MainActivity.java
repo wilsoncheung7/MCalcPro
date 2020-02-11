@@ -49,24 +49,26 @@ public class MainActivity extends AppCompatActivity {
 //        ((TextView)findViewById(R.id.result)).setText(myMortgage);
         String table=myMortgage+"\t\t\t\t\tn\t\t\t\t\t\t\tBalance\n";
         MPro mp=new MPro();
+        mp.setPrinciple(principle);
+        mp.setAmortization(amortization);
+        mp.setInterest(interest_rate);
+
         if (Integer.parseInt(amortization)>=MPro.AMORT_MIN&&Integer.parseInt(amortization)<=MPro.AMORT_MAX){
 
-            for(int i=0;i<6;i++){
-                try {
 
+                try {
+                    for(int i=0;i<Integer.valueOf(amortization);i++){
+                    table+="\n\t\t"
+                            +String.format("%8d",i)
+                            +"\t\t\t\t"
+                            +mp.outstandingAfter(i,"%,16.0f")
+                            +"\n\n";
+                    }
                 }
                 catch (NumberFormatException nf){
                     System.out.println("Error");
                 }
 
-
-                table+="\n\t\t"
-                        +String.format("%8d",i)
-                        +"\t\t\t\t"
-                        +mortgageModel.outstandingAfter()
-                        +"\n\n";
-
-            }
         }
         ((TextView)findViewById(R.id.result)).setText(table);
 
