@@ -2,6 +2,11 @@ package eecs1022.mcalcpro;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
@@ -14,14 +19,21 @@ import java.util.Locale;
 
 import ca.roumani.i2c.MPro;
 
-public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
-    MPro mp=new MPro();
-    TextToSpeech textToSpeech;
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener, SensorEventListener {
+    MPro mp;
+    private TextToSpeech textToSpeech;
+    private SensorManager sensorManager;
+    private Sensor sensor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mp=new MPro();
+        this.textToSpeech=new TextToSpeech(this,this);
+        sensorManager=(SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensor=sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(this,sensor,SensorManager.SENSOR_DELAY_FASTEST);
         Button button=findViewById(R.id.compute);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,11 +98,30 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         }
         ((TextView)findViewById(R.id.result)).setText(table);
+        textToSpeech.speak(table,TextToSpeech.QUEUE_FLUSH,null);
 
     }
 
     @Override
     public void onInit(int i) {
         this.textToSpeech.setLanguage(Locale.CANADA);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        double x=sensorEvent.values[0];
+        double y=sensorEvent.values[1];
+        double z=sensorEvent.values[2];
+        double a=Math.sqrt(x*x)+Math.sqrt(y*y)+Math.sqrt(z*z);
+        if(a>40){
+            ((TextView)findViewById(R.id.principle)).setText("");
+            ((TextView)findViewById(R.id.amortization)).setText("");
+            ((TextView)findViewById(R.id.interest_rate)).setText("");
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
     }
 }
