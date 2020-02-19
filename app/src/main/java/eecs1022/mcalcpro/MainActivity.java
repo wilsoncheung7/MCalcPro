@@ -53,8 +53,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         EditText rateView=findViewById(R.id.interest_rate);
         String interest_rate=rateView.getText().toString();
 
-        MortgageModel mortgageModel=new MortgageModel(principle,amortization,interest_rate);
-        String myMortgage="Monthly Payment = "+mortgageModel.computePayment()
+        String myMortgage="Monthly Payment = "+mp.computePayment("%,16.0f")
                 +"\n"
                 +"\n"
                 +"By making this payments monthly for "+amortization
