@@ -3,15 +3,20 @@ package eecs1022.mcalcpro;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 import ca.roumani.i2c.MPro;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
+    MPro mp=new MPro();
+    TextToSpeech textToSpeech;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
                 +"\n";
 
         String table=myMortgage+"\t\t\t\t\tn\t\t\t\t\t\t\tBalance\n";
-        MPro mp=new MPro();
         mp.setPrinciple(principle);
         mp.setAmortization(amortization);
         mp.setInterest(interest_rate);
@@ -83,5 +87,10 @@ public class MainActivity extends AppCompatActivity {
         }
         ((TextView)findViewById(R.id.result)).setText(table);
 
+    }
+
+    @Override
+    public void onInit(int i) {
+        this.textToSpeech.setLanguage(Locale.CANADA);
     }
 }
