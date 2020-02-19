@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ca.roumani.i2c.MPro;
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 +"on n as shown below:"
                 +"\n"
                 +"\n";
-//        ((TextView)findViewById(R.id.result)).setText(myMortgage);
+
         String table=myMortgage+"\t\t\t\t\tn\t\t\t\t\t\t\tBalance\n";
         MPro mp=new MPro();
         mp.setPrinciple(principle);
@@ -57,16 +58,26 @@ public class MainActivity extends AppCompatActivity {
 
 
                 try {
-                    for(int i=0;i<Integer.valueOf(amortization);i++){
+                    for(int i=0;i<=5;i++){
+
                     table+="\n\t\t"
                             +String.format("%8d",i)
                             +"\t\t\t\t"
                             +mp.outstandingAfter(i,"%,16.0f")
                             +"\n\n";
                     }
+                    for (int j=10;j<=20;j+=5){
+                        table+="\n\t\t"
+                                +String.format("%8d",j)
+                                +"\t\t\t\t"
+                                +mp.outstandingAfter(j,"%,16.0f")
+                                +"\n\n";
+                    }
                 }
-                catch (NumberFormatException nf){
-                    System.out.println("Error");
+                catch (Exception e){
+                    Toast toast=Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT);
+                    toast.show();
+
                 }
 
         }

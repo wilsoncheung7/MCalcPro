@@ -24,7 +24,6 @@ public class MortgageModel {
     }
 
     public String outstandingAfter(){
-        mp.setAmortization(this.a);
         return mp.outstandingAfter(3,"%,16.0f");
     }
 }
